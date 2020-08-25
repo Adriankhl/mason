@@ -48,15 +48,28 @@
 			<groupId>com.github.hharrison</groupId>
 			<artifactId>java3d-core</artifactId>
 			<version>1.6.2</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/java3d/j3dcore.jar</systemPath>
 		</dependency>
 
 
-		<!-- https://mvnrepository.com/artifact/java3d/j3d-core-utils -->
+		<!-- https://github.com/hharrison/java3d-core -->
 		<dependency>
 			<groupId>com.github.hharrison</groupId>
 			<artifactId>java3d-utils</artifactId>
 			<version>1.6.2</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/java3d/j3dutils.jar</systemPath>
 		</dependency>
+
+		<dependency>
+			<groupId>com.github.hharrison</groupId>
+			<artifactId>vecmath</artifactId>
+			<version>1.6.2</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/java3d/vecmath.jar</systemPath>
+		</dependency>
+
 
 		<!-- https://mvnrepository.com/artifact/org.beanshell/bsh -->
 		<dependency>
