@@ -8,7 +8,7 @@ package sim.engine;
 
 /** Something that can be stepped */
 
-public interface Steppable extends java.io.Serializable
+public interface Steppable<T extends SimState> extends java.io.Serializable
     {
-    public void step(SimState state);
+    public void step(T state);
     }
