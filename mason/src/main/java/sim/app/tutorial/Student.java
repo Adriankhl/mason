@@ -10,11 +10,12 @@ public class Student implements Steppable {
 
     public static final double MAX_FORCE = 3.0;
 
-    double friendsClose = 0.0;
-    // initially very close to my friends
-    double enemiesCloser = 10.0;
-    // WAY too close to my enemies
+    double friendsClose = 0.0;    // initially very close to my friends
+    double enemiesCloser = 10.0;    // WAY too close to my enemies
     public double getAgitation() { return friendsClose + enemiesCloser; }
+
+    @Override
+    public String toString() { return "[" + System.identityHashCode(this) + "] agitation: " + getAgitation(); }
 
     @Override
     public void step(SimState state)
