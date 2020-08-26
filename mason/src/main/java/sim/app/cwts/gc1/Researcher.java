@@ -7,6 +7,11 @@ import java.util.List;
 
 public class Researcher implements Steppable {
 
+    public enum Strategy {
+        RESEARCH,
+        PROPOSAL
+    }
+
     double quality = 1.0;
 
     List<Double> payoffs = new ArrayList<>();
