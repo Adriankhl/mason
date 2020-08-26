@@ -1,9 +1,6 @@
-package sim.app.cwts.gcmodel1;
+package sim.app.cwts.gc1;
 
 import sim.engine.*;
-import sim.field.continuous.*;
-import sim.util.*;
-import sim.field.network.*;
 
 import java.util.ArrayList;
 import java.util.List;

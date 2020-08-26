@@ -64,5 +64,23 @@
 #sim.app.woims3d.WoimsDemo3DWithUI
 
 sim.app.tutorial.StudentsWithUI
+sim.app.antsforage.AntsForageWithUI
+sim.app.asteroids.AsteroidsWithUI
+sim.app.celegans.CelegansWithUI
+sim.app.cto.CooperativeObservationWithUI
 sim.app.flockers.FlockersWithUI
-
+sim.app.heatbugs.HeatBugsWithUI
+sim.app.hexabugs.HexaBugsWithUI
+sim.app.keepaway.KeepawayWithUI
+sim.app.lightcycles.LightCyclesWithUI
+sim.app.lsystem.LSystemWithUI
+sim.app.mav.MavDemoWithUI
+sim.app.mousetraps.MouseTrapsWithUI
+sim.app.networktest.NetworkTestWithUI
+sim.app.pacman.PacManWithUI
+sim.app.particles3d.Particles3DWithUI
+sim.app.pso.PSOWithUI
+sim.app.schelling.SchellingWithUI
+sim.app.swarmgame.SwarmGameWithUI
+sim.app.virus.VirusInfectionDemoWithUI
+sim.app.woims.WoimsDemoWithUI

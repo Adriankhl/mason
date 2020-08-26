@@ -1,4 +1,4 @@
-package sim.app.cwts.gcmodel1;
+package sim.app.cwts.gc1;
 
 import sim.app.tutorial.Students;
 import sim.engine.*;
