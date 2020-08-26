@@ -64,3 +64,5 @@
 #sim.app.woims3d.WoimsDemo3DWithUI
 
 sim.app.tutorial.StudentsWithUI
+sim.app.flockers.FlockersWithUI
+
