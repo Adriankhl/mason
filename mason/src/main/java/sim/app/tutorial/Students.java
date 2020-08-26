@@ -52,6 +52,7 @@ public class Students extends SimState {
             randomMultiplier = TEMPERING_INITIAL_RANDOM_MULTIPLIER;
             schedule.scheduleRepeating(schedule.EPOCH, 1, new Steppable()
             {
+                @Override
                 public void step(SimState state) { if (tempering) randomMultiplier *= TEMPERING_CUT_DOWN; }
             });
         }
