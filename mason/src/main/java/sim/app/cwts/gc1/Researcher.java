@@ -1,9 +1,11 @@
 package sim.app.cwts.gc1;
 
 import sim.engine.*;
+import sim.util.Double2D;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.Integer;
 
 public class Researcher implements Steppable<Academia> {
 
@@ -32,7 +34,7 @@ public class Researcher implements Steppable<Academia> {
     }
 
     // last payoff
-    double lastpayoff = 0.0;
+    double lastpayoff = quality;
 
     // Payoffs of all turns
     List<Double> payoffs = new ArrayList<>();
@@ -47,11 +49,30 @@ public class Researcher implements Steppable<Academia> {
         return proposalQuality;
     }
 
+    private Strategy pickStrategy(Integer numApplicant, Integer numGrant, double payoff, double lowestQuality, double avgQuality) {
+        Strategy newstrategy = strategy;
+        double chance = numGrant.doubleValue() / numApplicant.doubleValue();
+        if (payoff > lastpayoff) {
+            if (quality > avgQuality || quality > lowestQuality)
+                newstrategy = Strategy.PROPOSAL;
+            else if (chance * payoff > quality)
+                newstrategy = Strategy.PROPOSAL;
+        }
+
+        return newstrategy;
+    }
+
     @Override
     public void step(Academia state) {
         // Record payoffs and strategy in the last turn
         payoffs.add(lastpayoff);
         strategies.add(strategy);
+
+        strategy = pickStrategy(state.numProposal,
+                state.numCompetitiveFunding,
+                state.competitiveFunding,
+                state.acceptedProposal.stream().mapToDouble(Double::doubleValue).min().orElse(-1),
+                state.acceptedProposal.stream().mapToDouble(Double::doubleValue).average().orElse(-1));
 
         if (strategy == Strategy.RESEARCH) {
             lastpayoff = quality;
@@ -60,5 +81,7 @@ public class Researcher implements Steppable<Academia> {
             proposalQuality = state.lognormal(1., state.stdProposalQualityFactor) * quality;
         }
 
+        state.yard.setObjectLocation(this,
+                new Double2D(quality, payoffs.stream().mapToDouble(Double::doubleValue).average().orElse(-1)));
     }
 }
