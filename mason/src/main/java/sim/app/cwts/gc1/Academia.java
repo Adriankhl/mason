@@ -5,6 +5,8 @@ import sim.field.continuous.*;
 import sim.util.Double2D;
 
 import java.lang.Math;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Academia extends SimState {
 
@@ -18,16 +20,25 @@ public class Academia extends SimState {
     int numResearchers = 100;
 
     // Standard deviation of the quality of researchers
-    double stdQuality = 1;
+    double stdQuality = 1.0;
+
+    // Standard deviation of the factor of quality of proposal
+    double stdProposalQualityFactor = 1.0;
 
     // Amount of block funding and competitive funding
-    double totalBlockFunding = 100.0;
-    double totalCompetitiveFunding = 50.0;
+    //double totalBlockFunding = 100.0;
+    //double totalCompetitiveFunding = 50.0;
+
+    // competitive funding payoff multiplier
+    double competitiveFundingFactor = 1.2;
     int numCompetitiveFunding = 5;
 
     // Initial strategy choice
     int initNumResearch = 70;
     int iniNumProposal = numResearchers - initNumResearch;
+
+    // List of researcher who choose proposal
+    List<Researcher> proposalResearchers = new ArrayList<>();
 
     // Compute lognormal random number by mean and std of the lognormal distribution
     public double lognormal(double mean, double std) {
@@ -42,6 +53,9 @@ public class Academia extends SimState {
 
         // clear the yard
         yard.clear();
+
+        // clear proposalResearchers
+        proposalResearchers.clear();
 
         for(int i = 0; i < numResearchers; i++) {
 
@@ -62,6 +76,9 @@ public class Academia extends SimState {
 
             schedule.scheduleRepeating(researcher);
         }
+
+        var statistician = new EndOfTurn();
+        schedule.scheduleRepeating(schedule.EPOCH, 1, statistician);
     }
 
     public static void main(String[] args)

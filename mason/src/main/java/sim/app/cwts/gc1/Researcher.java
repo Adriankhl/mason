@@ -40,10 +40,25 @@ public class Researcher implements Steppable<Academia> {
     // Strategies of all turns
     List<Strategy> strategies = new ArrayList<>();
 
+    // Proposal quality
+    private double proposalQuality = 0.0;
+
+    public double getProposalQuality() {
+        return proposalQuality;
+    }
+
     @Override
     public void step(Academia state) {
+        // Record payoffs and strategy in the last turn
+        payoffs.add(lastpayoff);
+        strategies.add(strategy);
 
-        Academia academia = state;
+        if (strategy == Strategy.RESEARCH) {
+            lastpayoff = quality;
+        } else if (strategy == Strategy.PROPOSAL) {
+            lastpayoff = 0.0;
+            proposalQuality = state.lognormal(1., state.stdProposalQualityFactor) * quality;
+        }
 
     }
 }
