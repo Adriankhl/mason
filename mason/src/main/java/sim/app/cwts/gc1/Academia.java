@@ -74,6 +74,7 @@ public class Academia extends SimState {
             // Set researcher quality
             double quality = lognormal(1, stdQuality);
             researcher.setQuality(quality);
+            researcher.lastpayoff = quality;
 
             if(i < numResearch) {
                 researcher.setStrategy(Researcher.Strategy.RESEARCH);
