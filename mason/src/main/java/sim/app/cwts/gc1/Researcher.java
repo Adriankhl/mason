@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.lang.Integer;
 
-public class Researcher implements Steppable<Academia> {
+public class Researcher implements Steppable {
 
     public enum Strategy {
         RESEARCH,
         PROPOSAL
     }
 
-    private double quality = 1.0;
+    private double quality = 0.0;
     private Strategy strategy = Strategy.RESEARCH;
 
     public double getQuality() {
@@ -73,27 +73,28 @@ public class Researcher implements Steppable<Academia> {
     }
 
     @Override
-    public void step(Academia state) {
+    public void step(SimState state) {
+        Academia academia = (Academia) state;
         // Record payoffs and strategy in the last turn
         payoffs.add(lastpayoff);
         strategies.add(strategy);
 
-        strategy = pickStrategy(state.numProposal,
-                state.numCompetitiveFunding,
-                state.competitiveFunding,
-                state.acceptedProposal.stream().mapToDouble(Double::doubleValue).min().orElse(-1),
-                state.acceptedProposal.stream().mapToDouble(Double::doubleValue).average().orElse(-1));
+        strategy = pickStrategy(academia.numProposal,
+                academia.numCompetitiveFunding,
+                academia.competitiveFunding,
+                academia.acceptedProposal.stream().mapToDouble(Double::doubleValue).min().orElse(-1),
+                academia.acceptedProposal.stream().mapToDouble(Double::doubleValue).average().orElse(-1));
 
         if (strategy == Strategy.RESEARCH) {
             lastpayoff = quality;
         } else if (strategy == Strategy.PROPOSAL) {
             lastpayoff = 0.0;
-            proposalQuality = state.lognormal(1., state.stdProposalQualityFactor) * quality;
+            proposalQuality = academia.lognormal(1., academia.stdProposalQualityFactor) * quality;
         }
 
-        System.out.println(state.yard.getObjectLocation(this).y);
+        System.out.println(academia.yard.getObjectLocation(this).y);
 
-        state.yard.setObjectLocation(this,
-                new Double2D(quality, payoffs.stream().mapToDouble(Double::doubleValue).average().orElse(-1)));
+        academia.yard.setObjectLocation(this,
+                new Double2D(quality * 20, payoffs.stream().mapToDouble(Double::doubleValue).average().orElse(-1)));
     }
 }

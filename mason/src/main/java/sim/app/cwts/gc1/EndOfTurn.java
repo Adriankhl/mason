@@ -1,5 +1,6 @@
 package sim.app.cwts.gc1;
 
+import sim.engine.SimState;
 import sim.engine.Steppable;
 
 import java.util.ArrayList;
@@ -7,40 +8,42 @@ import java.util.Comparator;
 import java.lang.Math;
 import java.util.List;
 
-public class EndOfTurn implements Steppable<Academia> {
+public class EndOfTurn implements Steppable {
     @Override
-    public void step(Academia state) {
-        // Clean collection
-        state.acceptedProposal.clear();
+    public void step(SimState state) {
+        Academia academia = (Academia) state;
 
-        var proposals = state.proposalResearchers;
+        // Clean collection
+        academia.acceptedProposal.clear();
+
+        var proposals = academia.proposalResearchers;
         proposals.sort(Comparator.comparingDouble(Researcher::getProposalQuality).reversed());
 
         List<Researcher> topProposals = new ArrayList<>();
 
         if (proposals.size() > 0)
-            proposals.subList(0, Math.max(state.numCompetitiveFunding, proposals.size()));
+            proposals.subList(0, Math.max(academia.numCompetitiveFunding, proposals.size()));
 
         for(Researcher researcher: topProposals) {
-            researcher.lastpayoff = state.competitiveFunding;
-            state.acceptedProposal.add(researcher.getProposalQuality());
+            researcher.lastpayoff = academia.competitiveFunding;
+            academia.acceptedProposal.add(researcher.getProposalQuality());
         }
 
-        state.totalPayoff = 0.0;
-        for(Researcher researcher: state.allResearchers) {
-            state.totalPayoff += researcher.lastpayoff;
+        academia.totalPayoff = 0.0;
+        for(Researcher researcher: academia.allResearchers) {
+            academia.totalPayoff += researcher.lastpayoff;
         }
 
-        state.totalPayoffs.add(state.totalPayoff);
+        academia.totalPayoffs.add(academia.totalPayoff);
 
-        state.numResearch = Math.toIntExact(state.allResearchers.stream()
+        academia.numResearch = Math.toIntExact(academia.allResearchers.stream()
                 .filter(p -> p.getStrategy() == Researcher.Strategy.RESEARCH).count());
 
-        state.numProposal = Math.toIntExact(state.allResearchers.stream()
+        academia.numProposal = Math.toIntExact(academia.allResearchers.stream()
                 .filter(p -> p.getStrategy() == Researcher.Strategy.PROPOSAL).count());
 
 
         // clear list
-        state.proposalResearchers.clear();
+        academia.proposalResearchers.clear();
     }
 }

@@ -22,7 +22,7 @@ import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-public class AcademiaWithUI extends GUIState<Academia> {
+public class AcademiaWithUI extends GUIState {
     public Display2D display;
     public JFrame displayFrame;
     ContinuousPortrayal2D yardPortrayal = new ContinuousPortrayal2D();
@@ -37,7 +37,7 @@ public class AcademiaWithUI extends GUIState<Academia> {
         super(new Academia(System.currentTimeMillis()));
     }
 
-    public AcademiaWithUI(Academia state) {
+    public AcademiaWithUI(SimState state) {
         super(state);
     }
 
@@ -58,7 +58,7 @@ public class AcademiaWithUI extends GUIState<Academia> {
     }
 
     public void setupPortrayals() {
-        Academia academia = state;
+        Academia academia = (Academia) state;
         // tell the portrayals what to portray and how to portray them
         yardPortrayal.setField(academia.yard);
         yardPortrayal.setPortrayalForAll(
@@ -96,7 +96,7 @@ public class AcademiaWithUI extends GUIState<Academia> {
     }
 
     @Override
-    public void load(Academia state) {
+    public void load(SimState state) {
         super.load(state);
         setupPortrayals();
     }

@@ -14,7 +14,7 @@ public class Academia extends SimState {
         super(seed);
     }
 
-    public Continuous2D yard = new Continuous2D(1.0,100,100);
+    public Continuous2D yard = new Continuous2D(0.1,100,100);
 
     // Number of Researcher
     int numResearchers = 100;
@@ -83,7 +83,7 @@ public class Academia extends SimState {
             }
 
             yard.setObjectLocation(researcher,
-                    new Double2D(researcher.getQuality(), researcher.lastpayoff));
+                    new Double2D(researcher.getQuality() * 20, researcher.lastpayoff));
 
             schedule.scheduleRepeating(researcher);
         }
