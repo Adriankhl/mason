@@ -68,7 +68,7 @@ import java.util.*;
     by setting Schedule.setThrowingScheduleExceptions(false).
 */
 
-public abstract class GUIState
+public abstract class GUIState<T extends SimState>
     {
     /** An additional random number generator available for GUI and drawing purposes,
         separate from the one used in the model.  If you use this generator to do things
@@ -79,7 +79,7 @@ public abstract class GUIState
     public MersenneTwisterFast guirandom = new MersenneTwisterFast();
         
     /** The underlying SimState */
-    public SimState state;
+    public T state;
     
     /** The controller for the GUIState.  This field may be null if there is no controller
         or no controller YET */
@@ -95,7 +95,7 @@ public abstract class GUIState
     
     /** You may optionally override this constructor to call <code>super(state)</code> but you should
         be sure to override the no-argument GUIState() constructor as stipulated. */
-    public GUIState(SimState state)
+    public GUIState(T state)
         {
         this.state = state;
         resetQueues();
@@ -354,7 +354,7 @@ public abstract class GUIState
         state.start() will NOT be called.  Thus anything you handled in start() that needs
         to be reset to accommodate the new state should be handled here.  We recommend that you 
         call repaint() on any Display2Ds. */
-    public void load(SimState state)
+    public void load(T state)
         {
         this.state = state;
         started = true;  // just in case
@@ -384,7 +384,7 @@ public abstract class GUIState
         throws IOException, ClassNotFoundException, OptionalDataException, ClassCastException, Exception
         {
         FileInputStream f = new FileInputStream(file);
-        SimState state = SimState.readFromCheckpoint(f);
+        T state = SimState.readFromCheckpoint(f);
         f.close();
         if (!validSimState(state)) return false;
         finish();  // let it clean up

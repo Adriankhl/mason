@@ -299,14 +299,14 @@ public class SimState implements java.io.Serializable
         if a serialized object is not found in the CLASSPATH and thus cannot be created.  Throws an OptionalDataException
         if the stream is corrupted.  Throws a ClassCastException if the top-level object is not actually a SimState.
         Does not close or flush the stream. */
-    public static SimState readFromCheckpoint(InputStream stream)
+    public static <T extends SimState> T readFromCheckpoint(InputStream stream)
         throws IOException, ClassNotFoundException, OptionalDataException, ClassCastException
         {
         ObjectInputStream s = 
             new ObjectInputStream(
                 new GZIPInputStream (
                     new BufferedInputStream(stream)));
-        SimState state = (SimState) (s.readObject());
+        T state = (T) (s.readObject());
         state.awakeFromCheckpoint();
         return state;
         }
