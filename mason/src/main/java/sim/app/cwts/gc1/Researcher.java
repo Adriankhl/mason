@@ -52,11 +52,13 @@ public class Researcher implements Steppable<Academia> {
     private Strategy pickStrategy(Integer numApplicant, Integer numGrant, double payoff, double lowestQuality, double avgQuality) {
         Strategy newstrategy = strategy;
         double chance = numGrant.doubleValue() / numApplicant.doubleValue();
-        if (payoff > lastpayoff) {
-            if (quality > avgQuality || quality > lowestQuality)
-                newstrategy = Strategy.PROPOSAL;
-            else if (chance * payoff > quality)
-                newstrategy = Strategy.PROPOSAL;
+        if (lowestQuality != -1) { // -1 when the collection is empty - first round
+            if (payoff > lastpayoff) {
+                if (quality > avgQuality || quality > lowestQuality)
+                    newstrategy = Strategy.PROPOSAL;
+                else if (chance * payoff > quality)
+                    newstrategy = Strategy.PROPOSAL;
+            }
         }
 
         return newstrategy;
