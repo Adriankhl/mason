@@ -33,6 +33,14 @@ public class Researcher implements Steppable<Academia> {
             this.strategy = strategy;
     }
 
+    public double getLastpayoff() {
+        return lastpayoff;
+    }
+
+    public void setLastpayoff(double lastpayoff) {
+        this.lastpayoff = lastpayoff;
+    }
+
     // last payoff
     double lastpayoff = quality;
 
@@ -82,6 +90,8 @@ public class Researcher implements Steppable<Academia> {
             lastpayoff = 0.0;
             proposalQuality = state.lognormal(1., state.stdProposalQualityFactor) * quality;
         }
+
+        System.out.println(state.yard.getObjectLocation(this).y);
 
         state.yard.setObjectLocation(this,
                 new Double2D(quality, payoffs.stream().mapToDouble(Double::doubleValue).average().orElse(-1)));
