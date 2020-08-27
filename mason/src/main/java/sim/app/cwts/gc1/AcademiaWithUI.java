@@ -37,7 +37,7 @@ public class AcademiaWithUI extends GUIState<Academia> {
         super(new Academia(System.currentTimeMillis()));
     }
 
-    public AcademiaWithUI(SimState state) {
+    public AcademiaWithUI(Academia state) {
         super(state);
     }
 
@@ -66,12 +66,14 @@ public class AcademiaWithUI extends GUIState<Academia> {
                         new CircledPortrayal2D(
                                 new LabelledPortrayal2D(
                                         new OvalPortrayal2D() {
-                                            @Override
-                                            public void draw(Object object, Graphics2D graphics, DrawInfo2D info) {
-                                                Student student = (Student) object;
-                                                int agitationShade = (int) (student.getAgitation() * 255 / 10.0);
-                                                if (agitationShade > 255) agitationShade = 255;
-                                                paint = new Color(agitationShade, 0, 255 - agitationShade);
+                                            public void draw(Researcher object, Graphics2D graphics, DrawInfo2D info) {
+                                                Researcher researcher = object;
+                                                if (researcher.getStrategy() == Researcher.Strategy.RESEARCH)
+                                                    paint = new Color(255, 0, 0);
+                                                else if (researcher.getStrategy() == Researcher.Strategy.PROPOSAL)
+                                                    paint = new Color(0,255,0);
+                                                else
+                                                    paint = new Color(0, 0, 255);
                                                 super.draw(object, graphics, info);
                                             }
                                         },
@@ -84,5 +86,37 @@ public class AcademiaWithUI extends GUIState<Academia> {
         display.setBackdrop(Color.white);
         // redraw the display
         display.repaint();
+    }
+
+    @Override
+    public void start() {
+        super.start();
+        setupPortrayals();
+    }
+
+    @Override
+    public void load(Academia state) {
+        super.load(state);
+        setupPortrayals();
+    }
+
+    @Override
+    public void init(Controller c) {
+        super.init(c);
+        display = new Display2D(600, 600, this);
+        display.setClipping(false);
+        displayFrame = display.createFrame();
+        displayFrame.setTitle("Academia Display");
+        c.registerFrame(displayFrame); // so the frame appears in the "Display" list
+        displayFrame.setVisible(true);
+        display.attach(yardPortrayal, "Yard");
+    }
+
+    @Override
+    public void quit() {
+        super.quit();
+        if (displayFrame != null) displayFrame.dispose();
+        displayFrame = null;
+        display = null;
     }
 }
