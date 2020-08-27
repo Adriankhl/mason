@@ -16,12 +16,36 @@ public class Academia extends SimState {
 
     public Continuous2D yard = new Continuous2D(0.1,100,100);
 
+    public int getNumResearchers() {
+        return numResearchers;
+    }
+
+    public void setNumResearchers(int numResearchers) {
+        this.numResearchers = numResearchers;
+    }
+
     // Number of Researcher
     int numResearchers = 100;
     List<Researcher> allResearchers = new ArrayList<>();
 
+    public double getStdQuality() {
+        return stdQuality;
+    }
+
+    public void setStdQuality(double stdQuality) {
+        this.stdQuality = stdQuality;
+    }
+
     // Standard deviation of the quality of researchers
     double stdQuality = 1.0;
+
+    public double getStdProposalQualityFactor() {
+        return stdProposalQualityFactor;
+    }
+
+    public void setStdProposalQualityFactor(double stdProposalQualityFactor) {
+        this.stdProposalQualityFactor = stdProposalQualityFactor;
+    }
 
     // Standard deviation of the factor of quality of proposal
     double stdProposalQualityFactor = 1.0;
@@ -30,8 +54,25 @@ public class Academia extends SimState {
     //double totalBlockFunding = 100.0;
     //double totalCompetitiveFunding = 50.0;
 
+    public double getCompetitiveFundingFactor() {
+        return competitiveFundingFactor;
+    }
+
+    public void setCompetitiveFundingFactor(double competitiveFunding) {
+        this.competitiveFundingFactor = competitiveFunding;
+    }
+
     // competitive funding payoff multiplier
-    double competitiveFunding = 3;
+    double competitiveFundingFactor = 1.5;
+
+    public int getNumCompetitiveFunding() {
+        return numCompetitiveFunding;
+    }
+
+    public void setNumCompetitiveFunding(int numCompetitiveFunding) {
+        this.numCompetitiveFunding = numCompetitiveFunding;
+    }
+
     int numCompetitiveFunding = 5;
 
     public int getNumResearch() {
@@ -40,6 +81,7 @@ public class Academia extends SimState {
 
     public void setNumResearch(int numResearch) {
         this.numResearch = numResearch;
+        this.numProposal = this.numResearchers - numResearch;
     }
 
     // Strategy choice
@@ -51,6 +93,7 @@ public class Academia extends SimState {
 
     public void setNumProposal(int numProposal) {
         this.numProposal = numProposal;
+        this.numResearch = this.numResearchers - numProposal;
     }
 
     int numProposal = numResearchers - numResearch;
@@ -107,7 +150,7 @@ public class Academia extends SimState {
             }
 
             yard.setObjectLocation(researcher,
-                    new Double2D(researcher.getQuality() * 20, researcher.lastpayoff));
+                    new Double2D(researcher.getQuality() * 20, researcher.lastpayoff * 20));
 
             allResearchers.add(researcher);
 

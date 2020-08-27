@@ -57,8 +57,8 @@ public class Researcher implements Steppable {
         return proposalQuality;
     }
 
-    private Strategy pickStrategy(Integer numApplicant, Integer numGrant, double payoff, double lowestQuality,
-                                  double avgQuality) {
+    private Strategy pickStrategy(Integer numApplicant, Integer numGrant, double payoffFactor, double lowestQuality,
+                                  double avgQuality, Academia academia) {
         Strategy newStrategy = strategy;
         if (lastpayoff < quality)
             newStrategy = Strategy.RESEARCH;
@@ -72,12 +72,11 @@ public class Researcher implements Steppable {
         }
 
         //System.out.println(lowestQuality);
-        if (payoff > lastpayoff) {
-            if (quality > avgQuality || quality > lowestQuality)
+        if (quality > avgQuality || quality > lowestQuality)
+            newStrategy = Strategy.PROPOSAL;
+        else if (chance * (payoffFactor * quality) - (1.0 - chance) * quality > 1.0)
+            if (academia.random.nextDouble() > 0.5)
                 newStrategy = Strategy.PROPOSAL;
-            else if (chance * (payoff - quality) > 0.1)
-                newStrategy = Strategy.PROPOSAL;
-        }
 
         return newStrategy;
     }
@@ -91,9 +90,10 @@ public class Researcher implements Steppable {
 
         strategy = pickStrategy(academia.numProposal,
                 academia.numCompetitiveFunding,
-                academia.competitiveFunding,
+                academia.competitiveFundingFactor,
                 academia.acceptedProposal.stream().mapToDouble(Double::doubleValue).min().orElse(-1),
-                academia.acceptedProposal.stream().mapToDouble(Double::doubleValue).average().orElse(-1));
+                academia.acceptedProposal.stream().mapToDouble(Double::doubleValue).average().orElse(-1),
+                academia);
 
         if (strategy == Strategy.RESEARCH) {
             lastpayoff = quality;
@@ -106,6 +106,7 @@ public class Researcher implements Steppable {
         //System.out.println(academia.yard.getObjectLocation(this).y);
 
         academia.yard.setObjectLocation(this,
-                new Double2D(quality * 20, payoffs.stream().mapToDouble(Double::doubleValue).average().orElse(-1)));
+                new Double2D(quality * 20,
+                        payoffs.stream().mapToDouble(Double::doubleValue).average().orElse(-1) * 20));
     }
 }

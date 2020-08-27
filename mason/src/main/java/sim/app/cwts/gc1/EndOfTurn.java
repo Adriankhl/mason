@@ -24,7 +24,7 @@ public class EndOfTurn implements Steppable {
             topProposals = proposals.subList(0, Math.min(academia.numCompetitiveFunding, proposals.size()));
 
         for (Researcher researcher : topProposals) {
-            researcher.lastpayoff = academia.competitiveFunding;
+            researcher.lastpayoff = academia.competitiveFundingFactor * researcher.getProposalQuality();
             System.out.println(researcher.getProposalQuality());
             academia.acceptedProposal.add(researcher.getProposalQuality());
         }
