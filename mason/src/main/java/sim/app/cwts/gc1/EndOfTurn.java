@@ -5,7 +5,6 @@ import sim.engine.Steppable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.lang.Math;
 import java.util.List;
 
 public class EndOfTurn implements Steppable {
@@ -22,17 +21,19 @@ public class EndOfTurn implements Steppable {
         List<Researcher> topProposals = new ArrayList<>();
 
         if (proposals.size() > 0)
-            proposals.subList(0, Math.max(academia.numCompetitiveFunding, proposals.size()));
+            topProposals = proposals.subList(0, Math.min(academia.numCompetitiveFunding, proposals.size()));
 
-        for(Researcher researcher: topProposals) {
+        for (Researcher researcher : topProposals) {
             researcher.lastpayoff = academia.competitiveFunding;
+            System.out.println(researcher.getProposalQuality());
             academia.acceptedProposal.add(researcher.getProposalQuality());
         }
 
         academia.totalPayoff = 0.0;
-        for(Researcher researcher: academia.allResearchers) {
+        for (Researcher researcher : academia.allResearchers) {
             academia.totalPayoff += researcher.lastpayoff;
         }
+        //System.out.println(academia.totalPayoff);
 
         academia.totalPayoffs.add(academia.totalPayoff);
 

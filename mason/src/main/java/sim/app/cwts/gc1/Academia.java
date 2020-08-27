@@ -34,13 +34,38 @@ public class Academia extends SimState {
     double competitiveFunding = 3;
     int numCompetitiveFunding = 5;
 
+    public int getNumResearch() {
+        return numResearch;
+    }
+
+    public void setNumResearch(int numResearch) {
+        this.numResearch = numResearch;
+    }
+
     // Strategy choice
     int numResearch = 70;
+
+    public int getNumProposal() {
+        return numProposal;
+    }
+
+    public void setNumProposal(int numProposal) {
+        this.numProposal = numProposal;
+    }
+
     int numProposal = numResearchers - numResearch;
 
     // List of researcher who choose proposal
     List<Researcher> proposalResearchers = new ArrayList<>();
     List<Double> acceptedProposal = new ArrayList<>();
+
+    public double getTotalPayoff() {
+        return totalPayoff;
+    }
+
+    public void setTotalPayoff(double totalPayoff) {
+        this.totalPayoff = totalPayoff;
+    }
 
     // Statistics
     double totalPayoff = 0.0;
@@ -70,7 +95,6 @@ public class Academia extends SimState {
 
             Researcher researcher = new Researcher();
 
-
             // Set researcher quality
             double quality = lognormal(1, stdQuality);
             researcher.setQuality(quality);
@@ -85,10 +109,12 @@ public class Academia extends SimState {
             yard.setObjectLocation(researcher,
                     new Double2D(researcher.getQuality() * 20, researcher.lastpayoff));
 
+            allResearchers.add(researcher);
+
             schedule.scheduleRepeating(researcher);
         }
 
-        var endOfTurn = new EndOfTurn();
+        EndOfTurn endOfTurn = new EndOfTurn();
         schedule.scheduleRepeating(Schedule.EPOCH, 1, endOfTurn);
     }
 

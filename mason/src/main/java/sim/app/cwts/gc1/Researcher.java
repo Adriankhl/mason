@@ -1,11 +1,11 @@
 package sim.app.cwts.gc1;
 
-import sim.engine.*;
+import sim.engine.SimState;
+import sim.engine.Steppable;
 import sim.util.Double2D;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.Integer;
 
 public class Researcher implements Steppable {
 
@@ -30,7 +30,7 @@ public class Researcher implements Steppable {
     }
 
     public void setStrategy(Strategy strategy) {
-            this.strategy = strategy;
+        this.strategy = strategy;
     }
 
     public double getLastpayoff() {
@@ -57,19 +57,29 @@ public class Researcher implements Steppable {
         return proposalQuality;
     }
 
-    private Strategy pickStrategy(Integer numApplicant, Integer numGrant, double payoff, double lowestQuality, double avgQuality) {
-        Strategy newstrategy = strategy;
-        double chance = numGrant.doubleValue() / numApplicant.doubleValue();
-        if (lowestQuality != -1) { // -1 when the collection is empty - first round
-            if (payoff > lastpayoff) {
-                if (quality > avgQuality || quality > lowestQuality)
-                    newstrategy = Strategy.PROPOSAL;
-                else if (chance * payoff > quality)
-                    newstrategy = Strategy.PROPOSAL;
-            }
+    private Strategy pickStrategy(Integer numApplicant, Integer numGrant, double payoff, double lowestQuality,
+                                  double avgQuality) {
+        Strategy newStrategy = strategy;
+        if (lastpayoff < quality)
+            newStrategy = Strategy.RESEARCH;
+
+        double chance;
+
+        if (numApplicant < numGrant) {
+            chance = 1.0;
+        } else {
+            chance = numGrant.doubleValue() / numApplicant.doubleValue();
         }
 
-        return newstrategy;
+        //System.out.println(lowestQuality);
+        if (payoff > lastpayoff) {
+            if (quality > avgQuality || quality > lowestQuality)
+                newStrategy = Strategy.PROPOSAL;
+            else if (chance * (payoff - quality) > 0.1)
+                newStrategy = Strategy.PROPOSAL;
+        }
+
+        return newStrategy;
     }
 
     @Override
@@ -90,9 +100,10 @@ public class Researcher implements Steppable {
         } else if (strategy == Strategy.PROPOSAL) {
             lastpayoff = 0.0;
             proposalQuality = academia.lognormal(1., academia.stdProposalQualityFactor) * quality;
+            academia.proposalResearchers.add(this);
         }
 
-        System.out.println(academia.yard.getObjectLocation(this).y);
+        //System.out.println(academia.yard.getObjectLocation(this).y);
 
         academia.yard.setObjectLocation(this,
                 new Double2D(quality * 20, payoffs.stream().mapToDouble(Double::doubleValue).average().orElse(-1)));
