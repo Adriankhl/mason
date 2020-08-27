@@ -64,6 +64,7 @@
 #sim.app.woims3d.WoimsDemo3DWithUI
 
 sim.app.tutorial.StudentsWithUI
+sim.app.cwts.gc1.AcademiaWithUI
 sim.app.antsforage.AntsForageWithUI
 sim.app.asteroids.AsteroidsWithUI
 sim.app.celegans.CelegansWithUI
