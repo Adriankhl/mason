@@ -21,5 +21,5 @@ public interface Portrayal2D extends Portrayal
         high-resolution drawing rather than faster integer drawing.  It is possible that object
         is null.  The location of the object in the field may (and may not) be stored in
         info.location.  The form of that location varies depending on the kind of field used. */
-    public void draw(Object object, Graphics2D graphics, DrawInfo2D info);
+    public <T> void draw(T object, Graphics2D graphics, DrawInfo2D info);
     }

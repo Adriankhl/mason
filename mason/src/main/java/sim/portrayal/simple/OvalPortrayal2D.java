@@ -38,7 +38,7 @@ public class OvalPortrayal2D extends AbstractShapePortrayal2D
     transient Ellipse2D.Double preciseEllipse = new Ellipse2D.Double();
         
     // assumes the graphics already has its color set
-    public void draw(Object object, Graphics2D graphics, DrawInfo2D info)
+    public <T> void draw(T object, Graphics2D graphics, DrawInfo2D info)
         {
         Rectangle2D.Double draw = info.draw;
         final double width = draw.width*scale + offset;

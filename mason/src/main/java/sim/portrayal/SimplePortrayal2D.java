@@ -25,7 +25,7 @@ import java.awt.event.*;
 // forcing this to become an interface.
 public class SimplePortrayal2D implements Portrayal2D, java.io.Serializable
     {
-    public void draw(Object object, Graphics2D graphics, DrawInfo2D info)
+    public <T> void draw(T object, Graphics2D graphics, DrawInfo2D info)
         {
         }
     
