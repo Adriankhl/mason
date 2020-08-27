@@ -22,7 +22,7 @@ import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-public class AcademiaWithUI extends GUIState {
+public class AcademiaWithUI extends GUIState<Academia> {
     public Display2D display;
     public JFrame displayFrame;
     ContinuousPortrayal2D yardPortrayal = new ContinuousPortrayal2D();
@@ -58,9 +58,9 @@ public class AcademiaWithUI extends GUIState {
     }
 
     public void setupPortrayals() {
-        Students students = (Students) state;
+        Academia academia = state;
         // tell the portrayals what to portray and how to portray them
-        yardPortrayal.setField(students.yard);
+        yardPortrayal.setField(academia.yard);
         yardPortrayal.setPortrayalForAll(
                 new MovablePortrayal2D(
                         new CircledPortrayal2D(
@@ -78,8 +78,6 @@ public class AcademiaWithUI extends GUIState {
                                         5.0, null, Color.black, true),
                                 0, 5.0, Color.green, true)));
 
-        buddiesPortrayal.setField(new SpatialNetwork2D(students.yard, students.buddies));
-        buddiesPortrayal.setPortrayalForAll(new SimpleEdgePortrayal2D());
 
         // reschedule the displayer
         display.reset();
